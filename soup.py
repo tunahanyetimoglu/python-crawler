@@ -1,11 +1,3 @@
-"""
-    1 - Web sitesine baÄŸlan
-    2 - Kaynak kodunu al ve bs modÃ¼lÃ¼nÃ¼ aktar
-    3 - Bs modÃ¼lÃ¼ ile html kodlarÄ±nÄ± parÃ§ala
-    import os   
-    os.mkdir(path + "\\" + movieTable[i].find("a",attrs={"class":"film"}).text)
-"""
-
 import requests
 import urllib.request
 import os
