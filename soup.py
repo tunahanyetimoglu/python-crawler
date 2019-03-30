@@ -10,25 +10,26 @@ def _jpg(url,path,name):
 headers_param = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36"}
 path = "E:\CALISMALAR\DATASET"
 
-url = "https://boxofficeturkiye.com/yillik/?yilop=tum&yil=2018&sayfa=2"
+url = "https://boxofficeturkiye.com/yillik/?yilop=tum&yil=2018&sayfa=4" #5 YAP
 r = requests.get(url,headers=headers_param)
 soup = BeautifulSoup(r.content,"lxml")
 
 movieTable = soup.find("table",attrs={"class":"ustcizgi"}).find("table",attrs={"class":"navkutu"}).select("table:nth-of-type(4) > tr")
 movieCount = len(movieTable)
 
-for i in range(1,movieCount):
+for i in range(7,14):
     movieUrl = "https://boxofficeturkiye.com" + movieTable[i].find("a",attrs={"class":"film"}).get("href")
     
     pageRequest = requests.get(movieUrl,headers=headers_param)
     pageSource = BeautifulSoup(pageRequest.content,"lxml")
     movieName = movieTable[i].find("a",attrs={"class":"film"}).text
     
-    if '?' or ':' in movieName:
+    if '?' or ':' or '/' in movieName:
         movieName = movieName.replace("?","")
-        movieName = movieName.replace(":","")
+        movieName = movieName.replace(":"," ")       
+        movieName = movieName.replace("/"," ")
         
-    moviePath = path + "\\" + str(i+100) 
+    moviePath = path + "\\" + str(i+300)   ## 400 
     trailerPath = moviePath + "\Trailer"  
     picturePath = moviePath + "\Picture"
     
@@ -44,7 +45,13 @@ for i in range(1,movieCount):
     
     trailerTable = pageTrailerSource.findAll("a",attrs={"class":"trailer-link-play-icon"})
     trailerCount = len(trailerTable)
-    for i in (0,trailerCount-1):
+    
+    if trailerCount == 0:
+        trailerCount = 1
+    elif trailerCount == 1:
+        trailerCount = 2
+    
+    for i in range(0,trailerCount-1):
         trailerLink = pageTrailerSource.findAll("a",attrs={"class":"trailer-link-play-icon"})[i].get("href")
         cmd = "youtube-dl -o {}\%(title)s.%(ext)s {}".format(trailerPath,trailerLink)
         os.system(cmd)
