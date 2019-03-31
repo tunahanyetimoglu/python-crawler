@@ -65,8 +65,6 @@ for f in files:
         text = open("../garbage.txt","a+")
         text.write("{}".format(f.split("\\")[1]) + "\t" + textList[0] + " , " + textList[1] + "\n")
     elif count == 1:
-        print(textList[0])
-        print(os.path.abspath(f))
         if(textList[0] == thisList[1]):
             transfer(source + (f.split("\\"))[1] ,dest + "\\7 Yas")
         elif(textList[0] == thisList[2]):
